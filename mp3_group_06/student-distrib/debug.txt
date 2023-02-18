@@ -1,0 +1,109 @@
+make: Warning: File `Makefile.dep' has modification time 3.1 s in the future
+syscall.c: In function ‘execute’:
+syscall.c:76: warning: pointer targets in passing argument 1 of ‘process_create’ differ in signedness
+idt.o:(.data+0x0): multiple definition of `rtc_fop'
+filesys.o:(.data+0x0): first defined here
+idt.o:(.data+0x10): multiple definition of `file_fop'
+filesys.o:(.data+0x10): first defined here
+idt.o:(.data+0x20): multiple definition of `dir_fop'
+filesys.o:(.data+0x20): first defined here
+idt.o:(.data+0x30): multiple definition of `std_in'
+filesys.o:(.data+0x30): first defined here
+idt.o:(.data+0x40): multiple definition of `std_out'
+filesys.o:(.data+0x40): first defined here
+idt.o: In function `idt_init':
+/workdirmain/ece391/nankang2/MP3_NEW/student-distrib/idt.c:46: multiple definition of `null_fop'
+filesys.o:/workdirmain/ece391/nankang2/MP3_NEW/student-distrib/filesys.c:9: first defined here
+kernel.o:(.data+0x0): multiple definition of `rtc_fop'
+filesys.o:(.data+0x0): first defined here
+kernel.o:(.data+0x10): multiple definition of `file_fop'
+filesys.o:(.data+0x10): first defined here
+kernel.o:(.data+0x20): multiple definition of `dir_fop'
+filesys.o:(.data+0x20): first defined here
+kernel.o:(.data+0x30): multiple definition of `std_in'
+filesys.o:(.data+0x30): first defined here
+kernel.o:(.data+0x40): multiple definition of `std_out'
+filesys.o:(.data+0x40): first defined here
+kernel.o: In function `entry':
+/workdirmain/ece391/nankang2/MP3_NEW/student-distrib/kernel.c:28: multiple definition of `null_fop'
+filesys.o:/workdirmain/ece391/nankang2/MP3_NEW/student-distrib/filesys.c:9: first defined here
+keyboard.o:(.data+0x0): multiple definition of `rtc_fop'
+filesys.o:(.data+0x0): first defined here
+keyboard.o:(.data+0x10): multiple definition of `file_fop'
+filesys.o:(.data+0x10): first defined here
+keyboard.o:(.data+0x20): multiple definition of `dir_fop'
+filesys.o:(.data+0x20): first defined here
+keyboard.o:(.data+0x30): multiple definition of `std_in'
+filesys.o:(.data+0x30): first defined here
+keyboard.o:(.data+0x40): multiple definition of `std_out'
+filesys.o:(.data+0x40): first defined here
+keyboard.o: In function `keyboard_init':
+/workdirmain/ece391/nankang2/MP3_NEW/student-distrib/keyboard.c:89: multiple definition of `null_fop'
+filesys.o:/workdirmain/ece391/nankang2/MP3_NEW/student-distrib/filesys.c:9: first defined here
+lib.o:(.data+0x0): multiple definition of `rtc_fop'
+filesys.o:(.data+0x0): first defined here
+lib.o:(.data+0x10): multiple definition of `file_fop'
+filesys.o:(.data+0x10): first defined here
+lib.o:(.data+0x20): multiple definition of `dir_fop'
+filesys.o:(.data+0x20): first defined here
+lib.o:(.data+0x30): multiple definition of `std_in'
+filesys.o:(.data+0x30): first defined here
+lib.o:(.data+0x40): multiple definition of `std_out'
+filesys.o:(.data+0x40): first defined here
+lib.o: In function `set_cursor':
+/workdirmain/ece391/nankang2/MP3_NEW/student-distrib/lib.c:17: multiple definition of `null_fop'
+filesys.o:/workdirmain/ece391/nankang2/MP3_NEW/student-distrib/filesys.c:9: first defined here
+pit.o:(.data+0x0): multiple definition of `rtc_fop'
+filesys.o:(.data+0x0): first defined here
+pit.o:(.data+0x10): multiple definition of `file_fop'
+filesys.o:(.data+0x10): first defined here
+pit.o:(.data+0x20): multiple definition of `dir_fop'
+filesys.o:(.data+0x20): first defined here
+pit.o:(.data+0x30): multiple definition of `std_in'
+filesys.o:(.data+0x30): first defined here
+pit.o:(.data+0x40): multiple definition of `std_out'
+filesys.o:(.data+0x40): first defined here
+pit.o: In function `pit_init':
+/workdirmain/ece391/nankang2/MP3_NEW/student-distrib/pit.c:4: multiple definition of `null_fop'
+filesys.o:/workdirmain/ece391/nankang2/MP3_NEW/student-distrib/filesys.c:9: first defined here
+process.o:(.data+0x0): multiple definition of `rtc_fop'
+filesys.o:(.data+0x0): first defined here
+process.o:(.data+0x10): multiple definition of `file_fop'
+filesys.o:(.data+0x10): first defined here
+process.o:(.data+0x20): multiple definition of `dir_fop'
+filesys.o:(.data+0x20): first defined here
+process.o:(.data+0x30): multiple definition of `std_in'
+filesys.o:(.data+0x30): first defined here
+process.o:(.data+0x40): multiple definition of `std_out'
+filesys.o:(.data+0x40): first defined here
+process.o: In function `process_get_active_pcb':
+/workdirmain/ece391/nankang2/MP3_NEW/student-distrib/process.c:13: multiple definition of `null_fop'
+filesys.o:/workdirmain/ece391/nankang2/MP3_NEW/student-distrib/filesys.c:9: first defined here
+syscall.o:(.data+0x0): multiple definition of `rtc_fop'
+filesys.o:(.data+0x0): first defined here
+syscall.o:(.data+0x10): multiple definition of `file_fop'
+filesys.o:(.data+0x10): first defined here
+syscall.o:(.data+0x20): multiple definition of `dir_fop'
+filesys.o:(.data+0x20): first defined here
+syscall.o:(.data+0x30): multiple definition of `std_in'
+filesys.o:(.data+0x30): first defined here
+syscall.o:(.data+0x40): multiple definition of `std_out'
+filesys.o:(.data+0x40): first defined here
+syscall.o: In function `halt':
+/workdirmain/ece391/nankang2/MP3_NEW/student-distrib/syscall.c:15: multiple definition of `null_fop'
+filesys.o:/workdirmain/ece391/nankang2/MP3_NEW/student-distrib/filesys.c:9: first defined here
+terminal.o:(.data+0x0): multiple definition of `rtc_fop'
+filesys.o:(.data+0x0): first defined here
+terminal.o:(.data+0x10): multiple definition of `file_fop'
+filesys.o:(.data+0x10): first defined here
+terminal.o:(.data+0x20): multiple definition of `dir_fop'
+filesys.o:(.data+0x20): first defined here
+terminal.o:(.data+0x30): multiple definition of `std_in'
+filesys.o:(.data+0x30): first defined here
+terminal.o:(.data+0x40): multiple definition of `std_out'
+filesys.o:(.data+0x40): first defined here
+terminal.o: In function `copy_kb_buff':
+/workdirmain/ece391/nankang2/MP3_NEW/student-distrib/terminal.c:18: multiple definition of `null_fop'
+filesys.o:/workdirmain/ece391/nankang2/MP3_NEW/student-distrib/filesys.c:9: first defined here
+collect2: ld returned 1 exit status
+make: *** [bootimg] Error 1

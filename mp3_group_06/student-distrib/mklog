@@ -1,0 +1,4 @@
+kernel.c: In function ‘entry’:
+kernel.c:173: warning: pointer targets in passing argument 1 of ‘execute’ differ in signedness
+cp: cannot stat `./filesys_img': No such file or directory
+cp: cannot stat `/tmp/mp3/filesys_img': No such file or directory

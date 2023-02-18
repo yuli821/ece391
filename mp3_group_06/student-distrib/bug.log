@@ -1,0 +1,290 @@
+<=========================================================>
+<=================>    BUG LOG HEADER   <=================>
+<=========================================================>
+Assignment:
+    MP3
+CheckPoint:
+    CP1
+CreateTime:
+    2022.10.16
+
+<--------------------------------------------------------->
+                          BUG 0                          
+<--------------------------------------------------------->
+Time:
+    2022.10.15.
+Creator:
+    Yu Li.
+Description:
+    x86_desc.S: Paging init failed and keeps rebooting.
+Solution:
+    Switched the order of setting PSE flag in CR4 and PG flag bit in CR0.
+
+<--------------------------------------------------------->
+                          BUG 1                          
+<--------------------------------------------------------->
+Time:
+    2022.10.15.
+Creator:
+    Tongyu Liu
+Description:
+    Compile error: undefined reference to EXCEPTIONS vectors because
+    in-line asm code was formatted wrong
+Solution:
+    Add semicolons and \'s to the end of each line in asm code
+
+<--------------------------------------------------------->
+                          BUG 2                          
+<--------------------------------------------------------->
+Time:
+    2022.10.16.
+Creator:
+    Nan Kang.
+Description:
+    i8259.c: PIC initialization failed and keeps rebooting
+Solution:
+    1. Restore flags saved before entering the critical section of pic init
+    at the end of the section instead of setting IF to 1. Do not use critical
+    section in i8259_init.
+    2. Use command port for sending EOI instead of data port.
+    3. Use (EOI | irq_num) to specify the specific IRQ pin.
+
+
+<--------------------------------------------------------->
+                          BUG 3                          
+<--------------------------------------------------------->
+Time:
+    2022.10.16.
+Creator:
+    Nan Kang.
+Description:
+    rtc.c: RTC handler failed and the screen is not flashing which 
+    supposed to because the test_interrupt in rtc handler
+Solution:
+    1. Switched the order of port number and data in outb()
+    
+<--------------------------------------------------------->
+                          BUG 4                          
+<--------------------------------------------------------->
+Time:
+    2022.10.17.
+Creator:
+    Tongyu Liu.
+Description:
+    Implementations of idt and exception handler: exception
+    successfully raised but no interrupt 
+Solution:
+    1. Change default reserved3 bit to 0 and only set it when
+    add interrupt gate to idt
+    2. Add another exception wrapper based on conventions to
+    handle exceptions with error code
+    3. Add bound checking when set present bit in idt
+
+<--------------------------------------------------------->
+                          BUG 5                          
+<--------------------------------------------------------->
+Time:
+    2022.10.17
+Creator: 
+    Tongyu Liu
+Description:
+    keyboard console output has gaps/spaces between chars
+Solution:
+    The releasing scancode was scanned but had no corresponding font/ascii char
+    --so a nul one was displayed by putc.
+    Fixed by adding assersions for scancode range.
+<--------------------------------------------------------->
+                          BUG 6                          
+<--------------------------------------------------------->
+Time:
+    2022.10.23
+Creator: 
+    Zisu Jiang, Tongyu Liu
+Description:
+    A bunch of kb-terminal relater stuff:
+    1.terminal shows '(' on newline with enter
+    2. BS deletes things 2 at a  time 
+    3.'\t' takes 4 BS to delete
+    4.cannot write things on bottom line after scrolling
+    5.cursor disappears on bottom line after scrolling
+Solution:
+    1.completely forgot how \;p
+    2.kb switch did not break correctly
+    3.display 4*' ' for '\t' and use 4-cycle to delete
+    4.bug caused by using memset the video mem chunck of bottom line to 0x00 to clear the bottom line after scroll; For some reason this would black out the area and forbid re-writing it with new chars. Fix is by memset-ing the bottom line to ' ' chars rather than blacking out the mem.
+    5.force cursor to update after each putc (instead of by case)
+<--------------------------------------------------------->
+                          BUG 7                          
+<--------------------------------------------------------->
+Time:
+    2022.10.19
+Creator:
+    Yu Li
+Description:
+    File length is 0 when read the directory
+Solution:
+    When storing the pointer to the inode head, the offset is 1 * 4kb from the pointer to the bootblock, which is 4096.
+    Adding 4096 to the bootblock pointer after type casting, the problem solved.
+
+<--------------------------------------------------------->
+                          BUG 8                          
+<--------------------------------------------------------->
+Time:
+    2022.10.20
+Creator:
+    Yu Li
+Description:
+    dir_read only reads out the first file
+Solution:
+    Need to increment the file_pos in the file descriptor
+
+<--------------------------------------------------------->
+                          BUG 9                          
+<--------------------------------------------------------->
+Time:
+    2022.11.5.
+Creator:
+    Nan Kang.
+Description:
+    Shell doesn't act properly when press ALT and keypad*
+Solution:
+    Should ignore these instead of put 0x0 to buffer
+
+
+<--------------------------------------------------------->
+                          BUG 10                          
+<--------------------------------------------------------->
+Time:
+    2022.11.06.
+Creator:
+    Yu Li, Zisu Jiang.
+Description:
+    system calls micellaneous errors:
+    0. shell skips printing the first line of prompt while other prints well
+    1. shell executing but keyboard not respond, noticing that IF is cleared when stuck in terminal_read while loop
+    2. program eip filled inversely
+    3. exit generates general protection fault
+    4. gpf when errorneous command entered
+Solution:
+    0. filesys_img missing and add it back to repo
+    1. set IF when entering the sys call read (maybe we need to set syscall entry to be trap gate in idt later)
+    2. little endian -> directly read file 24-27 byte into program eip 
+    3. restore parent process kernel stack by restore tss.esp0 in halt
+    4. pcb should be created/activated after executable check, and after that if execute fails, we need to free current pid
+
+<--------------------------------------------------------->
+                          BUG 11                          
+<--------------------------------------------------------->
+Time:
+    2022.11.18.
+Creator:
+    Yu Li.
+Description:
+    Keep rebooting, something wrong in the terminal switch but we are not able to figure out.
+Solution:
+    Don't boot the first shell in kernel.c. Boot the first shell when the first pit interrupt, keep a count to the terminal number, then it works.
+    Don't know why we can't boot the first shell lin kernel.c, maybe some initialization doesn't work.
+
+<--------------------------------------------------------->
+                          BUG 12                          
+<--------------------------------------------------------->
+Time:
+    2022.11.21.
+Creator:
+    Yu Li.
+Description:
+    Run a program (ls), the output of the program is displayed in other terminal (different terminal everytimes).
+Solution:
+    1. Since the behavior is not constant, something wrong in the scheduler.
+    2. We write the content into the current active terminal buffer, but the current active terminal may not be the same as the one we are running the program.
+    3. After gdb, we found out we need different keyboard buffer for different terminal, and we also need different enter flags.
+    4. Adding keyboard buffer, buffer counter, and enter flag to the terminal struct, and modifing keyboard.c accordingly.
+
+
+<--------------------------------------------------------->
+                          BUG 13                          
+<--------------------------------------------------------->
+Time:
+    2022.11.23.
+Creator:
+    Yu Li.
+Description:
+    Run pingpong or fish or counter in one terminal, the output still appear on the screen after we switch visible terminal.
+Solution:
+    1. Observe that both terminal_write and keyboard call putc, but we want the keyboard always writes to the screen and terminal writes to the corresponding
+        terminal buffer or screen depending on the viewing terminal and active terminal.
+    2. Create another page which mappes virtual 0xb7000 to physical 0xb8000.
+    3. Make two version of putc, one always writes to virtual 0xb7000(screen), one writes to virtual 0xb8000, which is changing by terminal switch
+    4. Keyboard and terminal now call different putc, which write to different place in memory.
+
+<--------------------------------------------------------->
+                          BUG 14                          
+<--------------------------------------------------------->
+Time:
+    2022.11.24.
+Creator:
+    Yu Li, Zisu Jiang.
+Description:
+    If one terminal running pingpong/counter, the cursor of other terminal will also moves
+Solution:
+    1. We initially have store_cursor_term and update_cursor_term when terminal switch, but it doesn't work if a program runs longer than it's assigned time slot.
+    2. We change everything in lib.c which uses screen_x, screen_y. We replace them with the screen_x, screen_y in the terminal struct.
+
+<--------------------------------------------------------->
+                          BUG 15                          
+<--------------------------------------------------------->
+Time:
+    2022.11.27.
+Creator:
+    Yu Li.
+Description:
+    Pingpong is really cranky.
+Solution:
+    Add rtc virtualization. 
+    1. Store rtc frequency in pcb.
+    2. When an rtc interrpt comes, update the file pos for every pocess which uses rtc. When rtc read is called, compare file pos and rtc frequency.
+
+
+<--------------------------------------------------------->
+                          BUG 16                          
+<--------------------------------------------------------->
+Time:
+    2022.11.28.
+Creator:
+    Yu Li, Nan Kang.
+Description:
+    After running multiple shells, also exited, we cannot run other programs (displaying no such command).
+Solution:
+    In process_halt, change the position of clear pid_array (before rebooting the shell). 
+
+<--------------------------------------------------------->
+                          BUG 17                          
+<--------------------------------------------------------->
+Time:
+    2022.11.29.
+Creator:
+    Yu Li, Tongyu Liu.
+Description:
+    Grep never ends, the code stucks in the while loop in the rtc_read.
+Solution:
+    Change the initialization of rtc frequency. The rtc frequency is initialized to -1 and file pos is initialized to 0.
+    In the while loop, we can only exit if file pos >= rtc frequency.
+    We initialize the rtc frequency to 0, then it works.
+    Further problem: In rtc_open, we set the rtc frequency to MIN_FREQ, but open syscall never call rtc_open. Don't know if this is a concern since
+    our code is working. Maybe it should call rtc_open in open syscall.
+
+<--------------------------------------------------------->
+                          BUG 18                          
+<--------------------------------------------------------->
+Time:
+    2022.12.4.
+Creator:
+    Yu Li.
+Description:
+    When we run fish on one terminal, we can't run other programs (keyboard interrupt seems dead). When running multiple fish, same thing happens when one fish halt.
+Solution:
+    There is a protection fault when we run process which is parallel to fish. It's because we reset the vidmap when we halt a process, and we never set it back in terminal switch.
+    When we do terminal switch, we set the present bit of the page equal to the vidmap flag in pcb.
+
+
+
